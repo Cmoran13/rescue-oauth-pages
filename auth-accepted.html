@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Inventory Rescue — Authorization Approved</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 3rem auto; padding: 0 1rem; line-height: 1.5; color: #222; }
+  h1 { font-size: 1.3rem; }
+  .code-box { background: #f2f2f2; border: 1px solid #ccc; border-radius: 6px; padding: 1rem;
+              font-family: ui-monospace, monospace; word-break: break-all; margin: 1rem 0; }
+  button { font: inherit; padding: 0.5rem 1rem; cursor: pointer; }
+  .missing { color: #a33; }
+</style>
+</head>
+<body>
+<h1>eBay authorization approved</h1>
+<p>This page does not send anything back to Rescue automatically — Rescue runs locally
+and can't receive this redirect directly. Copy the authorization code below and paste
+it into Inventory Rescue's <code>/settings/ebay/connect</code> page.</p>
+
+<div id="code-box" class="code-box">reading URL…</div>
+<button id="copy-btn" style="display:none">Copy code</button>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const box = document.getElementById("code-box");
+  const btn = document.getElementById("copy-btn");
+  if (code) {
+    box.textContent = code;
+    btn.style.display = "inline-block";
+    btn.addEventListener("click", () => {
+      navigator.clipboard.writeText(code).then(() => { btn.textContent = "Copied!"; });
+    });
+  } else {
+    box.innerHTML = '<span class="missing">No "code" parameter found in this page\'s URL. ' +
+      'Check the full address bar for it manually.</span>';
+  }
+</script>
+</body>
+</html>
